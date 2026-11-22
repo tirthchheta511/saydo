@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>SayDo: do companies keep the promises in their earnings releases?</title>
+<meta name="description" content="SayDo reads the promises U.S. companies make in their earnings press releases, checks them against the results they later report, and forecasts new promises.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=Spectral:ital,wght@0,400;0,500;1,400;1,500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<a class="skip" href="#lookup">Skip to company lookup</a>
+<header class="top">
+  <a class="mark" href="#" aria-label="SayDo, back to top"><span class="mark-say">Say</span><span class="mark-do">Do</span></a>
+  <nav aria-label="Sections">
+    <a href="#lookup">Look up a company</a>
+    <a href="#ranking">All companies</a>
+    <a href="#patterns">Patterns</a>
+    <a href="#try">Try the model</a>
+    <a href="#notes">Analyst notes</a>
+    <a href="#limits">Limits</a>
+  </nav>
+</header>
+
+<main>
+  <section class="pair hero" aria-labelledby="hero-say">
+    <div class="say">
+      <h1 id="hero-say" class="word word-say">Say.</h1>
+      <p class="lede">Every quarter, companies tell investors what they expect to earn. SayDo reads those promises straight from the press releases.</p>
+      <div class="exhibit" id="hero-promise" aria-live="polite"></div>
+    </div>
+    <div class="do">
+      <p class="word word-do" aria-hidden="true">Do.</p>
+      <p class="lede">Then it waits for the official results and checks, promise by promise, whether the company delivered.</p>
+      <div class="exhibit" id="hero-result" aria-live="polite"></div>
+    </div>
+    <span class="thread" id="hero-thread" aria-hidden="true"></span>
+  </section>
+
+  <section class="pair" aria-label="Headline numbers">
+    <div class="say"><dl class="figures" id="figures-say"></dl></div>
+    <div class="do"><dl class="figures" id="figures-do"></dl></div>
+  </section>
+
+  <section class="pair" id="lookup" aria-labelledby="lookup-h">
+    <div class="say">
+      <h2 id="lookup-h">Look up a company</h2>
+      <p>Type a name or a ticker. Each promise appears on this side, and what happened appears across the seam.</p>
+      <label class="field" for="company-input">Company
+        <input id="company-input" list="company-list" autocomplete="off" placeholder="for example Nvidia or NVDA">
+      </label>
+      <datalist id="company-list"></datalist>
+      <p class="hint" id="lookup-hint"></p>
+    </div>
+    <div class="do">
+      <div id="scorecard" class="scorecard" aria-live="polite"></div>
+    </div>
+  </section>
+  <div id="promise-rows" class="rows" aria-live="polite"></div>
+  <div class="center-action"><button id="more-rows" class="quiet" hidden>Show earlier promises</button></div>
+
+  <section class="span" id="ranking" aria-labelledby="ranking-h">
+    <div class="span-inner">
+      <h2 id="ranking-h">All scored companies on one line</h2>
+      <p id="ranking-sub" class="narrow"></p>
+      <div id="strip" class="strip" role="img" aria-label="Every scored company placed by its Say-Do score"></div>
+      <p class="legend"><span class="key key-keeps"></span>keeps promises more than most <span class="key key-line"></span>in line with most <span class="key key-misses"></span>misses more than most</p>
+      <p class="hint" id="ranking-note"></p>
+    </div>
+  </section>
+
+  <section id="patterns" aria-labelledby="patterns-h">
+    <div class="pair pair-head">
+      <div class="say"><h2 id="patterns-h">What the promise looks like</h2></div>
+      <div class="do"><h2 aria-hidden="true">How often it was kept</h2></div>
+    </div>
+    <div id="pattern-rows" class="rows"></div>
+  </section>
+
+  <section class="pair" id="try" aria-labelledby="try-h">
+    <div class="say">
+      <h2 id="try-h">Try the model</h2>
+      <p>Describe a promise. The model was trained on promises whose outcome was public before 2024 and tested on later ones.</p>
+      <form id="try-form" class="form" onsubmit="return false"></form>
+    </div>
+    <div class="do">
+      <p class="over">Chance the promise is kept</p>
+      <p class="big" id="try-chance" aria-live="polite">–</p>
+      <div class="meter" aria-hidden="true"><span id="try-meter"></span><i id="try-base"></i></div>
+      <p class="hint" id="try-base-label"></p>
+      <ul class="moves" id="try-moves"></ul>
+      <p class="hint" id="try-honest"></p>
+    </div>
+    <span class="thread thread-plain" aria-hidden="true"></span>
+  </section>
+
+  <section class="pair" id="notes" aria-labelledby="notes-h">
+    <div class="say">
+      <h2 id="notes-h">The analyst's note</h2>
+      <p>For revenue promises, SayDo writes the short note a finance analyst would file on the day: the promise, the year so far, the history, and a forecast.</p>
+      <div class="pager"><button id="note-prev" class="quiet" aria-label="Previous note">Previous</button><span id="note-count"></span><button id="note-next" class="quiet" aria-label="Next note">Next</button></div>
+      <div id="note-before" class="note"></div>
+    </div>
+    <div class="do">
+      <h2 aria-hidden="true">What happened</h2>
+      <div id="note-graph" class="graph"></div>
+      <div id="note-after" class="note"></div>
+    </div>
+    <span class="thread" id="note-thread" aria-hidden="true"></span>
+  </section>
+
+  <section class="pair" id="limits" aria-labelledby="limits-say">
+    <div class="say">
+      <h2 id="limits-say">What SayDo says about itself</h2>
+      <ul class="claims" id="claims"></ul>
+    </div>
+    <div class="do">
+      <h2>Where it falls short</h2>
+      <ul class="claims" id="shortfalls"></ul>
+      <p><a href="MODEL_CARD.md">Read the full model card</a></p>
+    </div>
+  </section>
+</main>
+
+<footer class="foot">
+  <p>Built by Tirth Chheta with public filings from the U.S. Securities and Exchange Commission. A research and portfolio project, not investment advice.</p>
+  <p><a id="repo-link" href="https://github.com/tirthchheta511">Code and documentation on GitHub</a></p>
+</footer>
+
+<script src="data/companies.js"></script>
+<script src="data/summary.js"></script>
+<script src="data/findings.js"></script>
+<script src="data/try_it.js"></script>
+<script src="data/notes.js"></script>
+<script src="data/names.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
